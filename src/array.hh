@@ -6,6 +6,7 @@
 namespace ums {
 
 
+
 template <typename T>
 inline constexpr bool always_false = false;
 
@@ -65,22 +66,6 @@ auto dot(const A& a, const B& b) {
     return dot(a, b, n);
 }
 
-// Define the `mean` function for an Array-like type
-template <typename A, typename INDEX>
-auto mean(const A& a, INDEX start, INDEX count) {
-    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
-    using SumType = std::common_type_t<ValueType, double>;
-
-    auto result = sum(a, start, count);
-    return result / count;
-}
-
-template <typename A>
-auto mean(const A& a) {
-    auto n = len(a);
-    return mean(a, 0, n);
-}
-
 // Define the `sum` function for an Array-like type
 template <typename A, typename INDEX>
 auto sum(const A& a, INDEX start, INDEX count) {
@@ -97,8 +82,44 @@ auto sum(const A& a, INDEX start, INDEX count) {
 template <typename A>
 auto sum(const A& a) {
     auto n = len(a);
-    return sum(a, 0, n);
+    return sum(a, 0ul, n);
 }
+
+// Define the `mean` function for an Array-like type
+template <typename A, typename INDEX>
+auto mean(const A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    using SumType = std::common_type_t<ValueType, double>;
+
+    auto result = sum(a, start, count);
+    return result / count;
+}
+
+template <typename A>
+auto mean(const A& a) {
+    auto n = len(a);
+    return mean(a, 0ul, n);
+}
+
+template <typename A, typename INDEX>
+auto l2(const A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    using SumType = std::common_type_t<ValueType, double>;
+
+    SumType result = 0;
+    for (INDEX i = start; i < count; ++i) {
+        auto value = at(a, i);
+        result += value * value;
+    }
+    return std::sqrt(result);
+}
+
+template <typename A>
+auto l2(const A& a) {
+    auto n = len(a);
+    return l2(a, 0ul, n);
+}
+
 
 
 } // namespace ums
