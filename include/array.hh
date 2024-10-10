@@ -1,6 +1,8 @@
 #include <concepts>
 #include <stdexcept>
 #include <type_traits>
+#include <iostream>
+#include <cmath>
 
 
 namespace ums {
@@ -63,7 +65,7 @@ auto dot(const A& a, const B& b) {
     if (n != len(b)) {
         throw std::length_error("Arrays must have the same length.");
     }
-    return dot(a, b, 0ul, n);
+    return dot(a, b, static_cast<decltype(n)>(0), n);
 }
 
 // Define the `sum` function for an Array-like type
@@ -199,6 +201,32 @@ auto median(A& a) {
     return median(a, 0ul, n);
 }
 
+template <typename A>
+void print(const A& a, std::ostream& os = std::cout) {
+    os << "[";
+    auto n = len(a);
+    for (size_t i = 0; i < n; ++i) {
+        os << at(a, i);
+        if (i < n - 1) {
+            os << ", ";
+        }
+    }
+    os << "]";
+}
+
+template <typename A>
+auto tojson(const A& a) {
+    std::string result = "[";
+    auto n = len(a);
+    for (size_t i = 0; i < n; ++i) {
+        result += std::to_string(at(a, i));
+        if (i < n - 1) {
+            result += ", ";
+        }
+    }
+    result += "]";
+    return result;
+}
 
 
 
