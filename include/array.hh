@@ -84,7 +84,7 @@ auto sum(const A& a, INDEX start, INDEX count) {
 template <typename A>
 auto sum(const A& a) {
     auto n = len(a);
-    return sum(a, 0ul, n);
+    return sum(a, static_cast<decltype(n)>(0), n);
 }
 
 // Define the `mean` function for an Array-like type
@@ -100,7 +100,7 @@ auto mean(const A& a, INDEX start, INDEX count) {
 template <typename A>
 auto mean(const A& a) {
     auto n = len(a);
-    return mean(a, 0ul, n);
+    return mean(a, static_cast<decltype(n)>(0), n);
 }
 
 template <typename A, typename INDEX>
@@ -119,7 +119,7 @@ auto l2(const A& a, INDEX start, INDEX count) {
 template <typename A>
 auto l2(const A& a) {
     auto n = len(a);
-    return l2(a, 0ul, n);
+    return l2(a, static_cast<decltype(n)>(0), n);
 }
 
 template <typename A, typename B, typename INDEX>
@@ -136,7 +136,7 @@ auto cosine_similarity(const A& a, const B& b) {
     if (n != len(b)) {
         throw std::length_error("Arrays must have the same length.");
     }
-    return cosine_similarity(a, b, 0ul, n);
+    return cosine_similarity(a, b, static_cast<decltype(n)>(0), n);
 }
 
 template <typename A, typename B, typename INDEX>
@@ -159,7 +159,7 @@ auto euclidean_distance(const A& a, const B& b) {
     if (n != len(b)) {
         throw std::length_error("Arrays must have the same length.");
     }
-    return euclidean_distance(a, b, 0ul, n);
+    return euclidean_distance(a, b, static_cast<decltype(n)>(0), n);
 }
 
 template <typename A, typename INDEX>
@@ -198,7 +198,7 @@ auto median(A& a, INDEX start, INDEX count) {
 template <typename A>
 auto median(A& a) {
     auto n = len(a);
-    return median(a, 0ul, n);
+    return median(a, static_cast<decltype(n)>(0), n);
 }
 
 template <typename A>
