@@ -44,13 +44,13 @@ auto len(const ARRAY& arr) {
 
 // Define the `dot` function for two Array-like types
 template <typename A, typename B, typename INDEX>
-auto dot(const A& a, const B& b, INDEX n) {
+auto dot(const A& a, const B& b, INDEX begin, INDEX count) {
     using ValueTypeA = std::remove_reference_t<decltype(at(a, 0))>;
     using ValueTypeB = std::remove_reference_t<decltype(at(b, 0))>;
     using CommonType = std::common_type_t<ValueTypeA, ValueTypeB>;
 
     CommonType result = 0;
-    for (INDEX i = 0; i < n; ++i) {
+    for (INDEX i = begin; i < count; ++i) {
         result += static_cast<CommonType>(at(a, i)) * static_cast<CommonType>(at(b, i));
     }
     return result;
@@ -63,7 +63,7 @@ auto dot(const A& a, const B& b) {
     if (n != len(b)) {
         throw std::length_error("Arrays must have the same length.");
     }
-    return dot(a, b, n);
+    return dot(a, b, 0ul, n);
 }
 
 // Define the `sum` function for an Array-like type
@@ -119,6 +119,86 @@ auto l2(const A& a) {
     auto n = len(a);
     return l2(a, 0ul, n);
 }
+
+template <typename A, typename B, typename INDEX>
+auto cosine_similarity(const A& a, const B& b, INDEX begin, INDEX count) {
+    auto dot_product = dot(a, b, begin, count);
+    auto l2_a = l2(a, begin, count);
+    auto l2_b = l2(b, begin, count);
+    return dot_product / (l2_a * l2_b);
+}
+
+template <typename A, typename B>
+auto cosine_similarity(const A& a, const B& b) {
+    auto n = len(a);
+    if (n != len(b)) {
+        throw std::length_error("Arrays must have the same length.");
+    }
+    return cosine_similarity(a, b, 0ul, n);
+}
+
+template <typename A, typename B, typename INDEX>
+auto euclidean_distance(const A& a, const B& b, INDEX begin, INDEX count) {
+    using ValueTypeA = std::remove_reference_t<decltype(at(a, 0))>;
+    using ValueTypeB = std::remove_reference_t<decltype(at(b, 0))>;
+    using CommonType = std::common_type_t<ValueTypeA, ValueTypeB>;
+
+    CommonType result = 0;
+    for (INDEX i = begin; i < count; ++i) {
+        auto diff = static_cast<CommonType>(at(a, i)) - static_cast<CommonType>(at(b, i));
+        result += diff * diff;
+    }
+    return std::sqrt(result);
+}
+
+template <typename A, typename B>
+auto euclidean_distance(const A& a, const B& b) {
+    auto n = len(a);
+    if (n != len(b)) {
+        throw std::length_error("Arrays must have the same length.");
+    }
+    return euclidean_distance(a, b, 0ul, n);
+}
+
+template <typename A, typename INDEX>
+auto percentile(A& a, INDEX start, INDEX count, double p) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    std::vector<ValueType> copy(count);
+    for (INDEX i = 0; i < count; ++i) {
+        copy[i] = at(a, start + i);
+    }
+    std::sort(copy.begin(), copy.end());
+    auto index = static_cast<INDEX>(p * count);
+    return copy[index];
+}
+
+template <typename A>
+auto percentile(A& a, double p) {
+    auto n = len(a);
+    return percentile(a, 0ul, n, p);
+}   
+
+template <typename A, typename INDEX>
+auto median(A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    std::vector<ValueType> copy(count);
+    for (INDEX i = 0; i < count; ++i) {
+        copy[i] = at(a, start + i);
+    }
+    std::sort(copy.begin(), copy.end());
+    if (count % 2 == 0) {
+        return (copy[count / 2 - 1] + copy[count / 2]) / 2;
+    } else {
+        return copy[count / 2];
+    }
+}
+
+template <typename A>
+auto median(A& a) {
+    auto n = len(a);
+    return median(a, 0ul, n);
+}
+
 
 
 
