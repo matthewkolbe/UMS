@@ -34,3 +34,5 @@
 # Build folders
 _build/
 bin/
+Build/
+build/
