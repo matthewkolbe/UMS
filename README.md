@@ -1,10 +1,8 @@
 # UMS
 
-An acronym for Unified Math Stats. An experimental library to see if some C++20 features can be used to unite the many libraries and containers under one "it just works (though maybe not optimally)" kind of framework.
+An acronym for Unified Math Stats. An experimental library to see if some C++20 features can be used to unite the many libraries and containers under one "it just works (though maybe not optimally)" kind of framework. The premise being that there are a number of math and statistics containers in FOSS and STL containers that more-or-less have the same characteristics, but have slightly different syntax and are distinct types. Instead, we "wrap them" in an `concept` in-lieu of using an adapter pattern, and leverage `constexpr` checks on common access-patterns to see which one is supoorted by that particular container, and promotes it for use--all under the hood, so all the user has to do is call `ums::mean(data)` (or whatever), and it just gets the mean regardless of the container, and without a runtime cost.
 
 The goal is to make C++ data analysis a little bit more "like Python" in the sense that Python just works. The type restrictions in C++, while wonderful for performance, make compatibility between differing types difficult to navigate, and push people who are stronger in data analysis and weaker in programming towards Python, where things "just work."
-
-Hoestly, though, probably not terribly useful, and ultimately is just me playing around.
 
 # Quick Guide
 
