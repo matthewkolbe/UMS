@@ -16,10 +16,10 @@ inline constexpr bool always_false = false;
 // Define the `at` function that works with any Array-like type
 template <typename ARRAY, typename INDEX>
 decltype(auto) at(ARRAY& arr, INDEX index) {
-    if constexpr (requires { arr[index]; }) {
-        return arr[index];  // Use `operator[]` if available.
-    } else if constexpr (requires { arr.at(index); }) {
+    if constexpr (requires { arr.at(index); }) {
         return arr.at(index);  // Use `at()` if available.
+    } else if constexpr (requires { arr[index]; }) {
+        return arr[index];  // Use `operator[]` if available.
     } else if constexpr (requires { arr.coeff(index); }) {
         return arr.coeff(index);  // Use `coeff()` if available.
     } else if constexpr (requires { arr(index); }) {
