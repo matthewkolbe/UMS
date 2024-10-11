@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "array.hh"
+#include "ums.hh"
 #include <vector>
 #include <array>
 #include <Eigen/Dense> // Include Eigen
@@ -201,5 +201,84 @@ TEST(Arr, CosSim) {
     EXPECT_NEAR(ums::cosine_similarity(d, f), 1.0, 1e-5);
 }
 
+TEST(Arr, Print) {
+    std::vector<int> a =            {1, 2, 3};
+    std::vector<int> b =            {1, 2, 3};
+    std::vector<unsigned short> c = {1, 2, 3};
+    std::vector<float> d =          {1, 2, 3};
+    std::vector<double> e =         {1, 2, 3};
+    std::array<int, 3> f =          {1, 2, 3};
+    std::array<long, 3> g =         {1, 2, 3};
+    std::array<float, 3> h =        {1, 2, 3};
+    std::array<double, 3> i =       {1, 2, 3};
+    double k[3] =                   {1, 2, 3};
+    float l[3] =                    {1, 2, 3};
 
+    Eigen::Vector3d j(1.0, 2.0, 3.0);
 
+    std::ostringstream stream;
+    ums::print(a, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(b, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(c, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(d, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(e, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(f, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(g, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(h, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(i, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(j, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(k, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+    stream.str("");
+    ums::print(l, stream);
+    EXPECT_EQ(stream.str(), "[1, 2, 3]");
+}
+
+TEST(Arr, JSON) {
+    std::vector<int> a =            {1, 2, 3};
+    std::vector<int> b =            {1, 2, 3};
+    std::vector<unsigned short> c = {1, 2, 3};
+    std::vector<float> d =          {1, 2, 3};
+    std::vector<double> e =         {1, 2, 3};
+    std::array<int, 3> f =          {1, 2, 3};
+    std::array<long, 3> g =         {1, 2, 3};
+    std::array<float, 3> h =        {1, 2, 3};
+    std::array<double, 3> i =       {1, 2, 3};
+    double k[3] =                   {1, 2, 3};
+    float l[3] =                    {1, 2, 3};
+
+    Eigen::Vector3d j(1.0, 2.0, 3.0);
+
+    EXPECT_EQ(ums::tojson(a), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(b), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(c), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(d), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(e), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(f), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(g), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(h), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(i), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(j), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(k), "[1, 2, 3]");
+    EXPECT_EQ(ums::tojson(l), "[1, 2, 3]");
+}
