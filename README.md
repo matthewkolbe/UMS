@@ -62,14 +62,3 @@ int main() {
 ```
 
 This example computes the dot product of an std::array and an std::vector using UMS, showcasing the library's ability to work with different container types.
-
-### Building Your Project with UMS
-
-After adding the UMS dependency to your CMakeLists.txt, build your project with:
-
-```
-mkdir build
-cd build
-cmake ..
-make
-```
