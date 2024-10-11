@@ -2,6 +2,7 @@
 #include "ums.hh"
 #include <vector>
 #include <array>
+#include <memory>
 #include <Eigen/Dense> // Include Eigen
 
 
@@ -27,6 +28,7 @@ TEST(Arr, Dot) {
     std::array<double, 3> i =       {1, 2, 3};
     double k[3] =                   {1, 2, 3};
     float l[3] =                    {1, 2, 3};
+    auto m = std::make_unique<std::array<float, 3>>(std::array<float, 3>{1.0f, 2.0f, 3.0f});
 
     Eigen::Vector3d j(1.0, 2.0, 3.0);
 
@@ -101,6 +103,12 @@ TEST(Arr, Dot) {
     EXPECT_EQ(ums::dot(l, i), 14);
     EXPECT_EQ(ums::dot(l, j), 14);
     EXPECT_EQ(ums::dot(l, k), 14);
+    EXPECT_EQ(ums::dot(l, l), 14);
+    EXPECT_EQ(ums::dot(m, a), 14); 
+    EXPECT_EQ(ums::dot(m, b), 14);
+    EXPECT_EQ(ums::dot(m, c), 14);
+    EXPECT_EQ(ums::dot(m, d), 14);
+    EXPECT_EQ(ums::dot(m, e), 14);
 }
 
 TEST(Arr, L2) {
