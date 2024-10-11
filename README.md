@@ -1,8 +1,10 @@
 # UMS
 
-An acronym for Unified Math Stats. An experimental library to see if some C++20 features can be used to unite the many libraries and containers under one "it just works (though maybe not optimally)" kind of framework. The premise being that there are a number of math and statistics containers in FOSS and STL containers that more-or-less have the same characteristics, but have slightly different syntax and are distinct types. Instead, we "wrap them" in an `concept` in-lieu of using an adapter pattern, and leverage `constexpr` checks on common access-patterns to see which one is supoorted by that particular container, and promotes it for use--all under the hood, so all the user has to do is call `ums::mean(data)` (or whatever), and it just gets the mean regardless of the container, and without a runtime cost.
+UMS stands for Unified Math Stats. It is an experimental library aimed at exploring how C++20 features can help unify various math and statistics libraries and containers into a framework where "it just works" (though maybe not optimally). The core idea is that there are many math and statistics containers in free and open-source software (FOSS), as well as in the STL, that have similar functionality but slightly different syntax and are treated as distinct types.
 
-The goal is to make C++ data analysis a little bit more "like Python" in the sense that Python just works. The type restrictions in C++, while wonderful for performance, make compatibility between differing types difficult to navigate, and push people who are stronger in data analysis and weaker in programming towards Python, where things "just work."
+UMS "wraps" these containers in a concept, rather than using an adapter pattern, and leverages constexpr checks on common access patterns to determine which methods are supported by each container. It then promotes the appropriate method for use—-all behind the scenes. This means that users can simply call ums::mean(data) (or other functions), and the library automatically handles the calculation, regardless of the underlying container, and without runtime overhead.
+
+The goal is to make C++ data analysis feel a little more "like Python" in the sense that things "just work." While C++'s type restrictions are great for performance, they can make it challenging to ensure compatibility between different types. UMS aims to bridge this gap, making C++ more approachable for data analysts by smoothing out these compatibility issues.
 
 # Quick Guide
 
