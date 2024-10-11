@@ -146,6 +146,10 @@ auto mean(const A& a, INDEX start, INDEX count) {
     using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
     using SumType = std::common_type_t<ValueType, double>;
 
+    if (count < 1) {
+        throw std::invalid_argument("Mean requires at least 1 element.");
+    }
+
     auto result = sum(a, start, count);
     return result / count;
 }
@@ -155,6 +159,58 @@ auto mean(const A& a) {
     auto n = len(a);
     return mean(a, static_cast<decltype(n)>(0), n);
 }
+
+// Define the variance function for an Array-like type
+template <VectorLike A, typename INDEX>
+auto variance(const A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    using SumType = std::common_type_t<ValueType, double>;
+
+    if (count < 2) {
+        throw std::invalid_argument("Variance requires at least 2 elements.");
+    }
+
+    auto m = mean(a, start, count);
+    SumType result = 0;
+    for (INDEX i = start; i < count; ++i) {
+        auto diff = static_cast<SumType>(at(a, i)) - m;
+        result += diff * diff;
+    }
+    return result / count;
+}
+
+template <VectorLike A>
+auto variance(const A& a) {
+    auto n = len(a);
+    return variance(a, static_cast<decltype(n)>(0), n);
+}
+
+// Define the skewness function for an Array-like type
+template <VectorLike A, typename INDEX>
+auto skewness(const A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    using SumType = std::common_type_t<ValueType, double>;
+
+    if (count < 3) {
+        throw std::invalid_argument("Skewness requires at least 3 elements.");
+    }
+
+    auto m = mean(a, start, count);
+    auto v = variance(a, start, count);
+    SumType result = 0;
+    for (INDEX i = start; i < count; ++i) {
+        auto diff = static_cast<SumType>(at(a, i)) - m;
+        result += diff * diff * diff;
+    }
+    return result / (count * v * std::sqrt(v));
+}
+
+template <VectorLike A>
+auto skewness(const A& a) {
+    auto n = len(a);
+    return skewness(a, static_cast<decltype(n)>(0), n);
+}
+
 
 template <VectorLike A, typename INDEX>
 auto l2(const A& a, INDEX start, INDEX count) {
