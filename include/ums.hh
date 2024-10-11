@@ -8,14 +8,20 @@
 
 namespace ums {
 
-
+template <typename T>
+concept Arithmetic = requires(T a, T b) {
+    { a + b } -> std::common_with<T>;
+    { a - b } -> std::common_with<T>;
+    { a * b } -> std::common_with<T>;
+    { a / b } -> std::common_with<T>;
+};
 
 template <typename T>
 inline constexpr bool always_false = false;
 
 // Define the `at` function that works with any Array-like type
 template <typename ARRAY, typename INDEX>
-decltype(auto) at(ARRAY& arr, INDEX index) {
+Arithmetic auto at(ARRAY& arr, INDEX index) {
     if constexpr (requires { arr.at(index); }) {
         return arr.at(index);  // Use `at()` if available.
     } else if constexpr (requires { arr[index]; }) {
@@ -28,6 +34,7 @@ decltype(auto) at(ARRAY& arr, INDEX index) {
         static_assert(always_false<ARRAY>, "Type does not support valid indexing.");
     }
 }
+
 
 // Define the `at` function that works with any Matrix-like type
 template <typename MATRIX, typename INDEX>
@@ -209,6 +216,32 @@ template <VectorLike A>
 auto skewness(const A& a) {
     auto n = len(a);
     return skewness(a, static_cast<decltype(n)>(0), n);
+}
+
+// Define the kurtosis function for an Array-like type
+template <VectorLike A, typename INDEX>
+auto kurtosis(const A& a, INDEX start, INDEX count) {
+    using ValueType = std::remove_reference_t<decltype(at(a, 0))>;
+    using SumType = std::common_type_t<ValueType, double>;
+
+    if (count < 4) {
+        throw std::invalid_argument("Kurtosis requires at least 4 elements.");
+    }
+
+    auto m = mean(a, start, count);
+    auto v = variance(a, start, count);
+    SumType result = 0;
+    for (INDEX i = start; i < count; ++i) {
+        auto diff = static_cast<SumType>(at(a, i)) - m;
+        result += diff * diff * diff * diff;
+    }
+    return result / (count * v * v);
+}
+
+template <VectorLike A>
+auto kurtosis(const A& a) {
+    auto n = len(a);
+    return kurtosis(a, static_cast<decltype(n)>(0), n);
 }
 
 
