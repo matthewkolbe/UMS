@@ -51,7 +51,7 @@ Example code:
 
 int main() {
 
-    // Choose any pair containers
+    // Choose any pair containers (even Eigen, Blaze, pointers, etc)
     std::array<double, 4> a = {1.0, 2.0, 3.0, 4.0};
     std::vector<int>      b = {5, 6, 7, 8};
 
