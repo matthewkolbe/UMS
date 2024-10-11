@@ -4,6 +4,8 @@ An acronym for Unified Math Stats. An experimental library to see if some C++20 
 
 The goal is to make C++ data analysis a little bit more "like Python" in the sense that Python just works. The type restrictions in C++, while wonderful for performance, make compatibility between differing types difficult to navigate, and push people who are stronger in data analysis and weaker in programming towards Python, where things "just work."
 
+Hoestly, though, probably not terribly useful, and probably just playing around.
+
 # Quick Guide
 
 Add this to your CMake file:
