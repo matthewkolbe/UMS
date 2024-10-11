@@ -19,6 +19,22 @@ concept Arithmetic = requires(T a, T b) {
 template <typename T>
 inline constexpr bool always_false = false;
 
+// Define the `data` function that works with various container types and smart pointers
+template <typename T>
+decltype(auto) data(T& object) {
+    if constexpr (requires { object.data(); }) {
+        return object.data();  // Use `data()` if available (e.g., std::vector, std::array).
+    } else if constexpr (requires { object.get(); }) {
+        return object.get();  // Use `get()` if available (e.g., std::unique_ptr, std::shared_ptr).
+    } else if constexpr (requires { object.value(); }) {
+        return object.value();  // Use `value()` if available (e.g., std::optional).
+    } else if constexpr (requires { *object; }) {
+        return *object;  // Use dereference if possible (e.g., raw pointers, smart pointers).
+    } else {
+        static_assert(always_false<T>, "Type does not support data retrieval.");
+    }
+}
+
 // Define the `at` function that works with any Array-like type
 template <typename ARRAY, typename INDEX>
 Arithmetic auto at(ARRAY& arr, INDEX index) {
@@ -30,6 +46,9 @@ Arithmetic auto at(ARRAY& arr, INDEX index) {
         return arr.coeff(index);  // Use `coeff()` if available.
     } else if constexpr (requires { arr(index); }) {
         return arr(index);  // Use `operator()` if available.
+    } else if constexpr (requires { ums::data(arr); }) {
+        // Use `data()` or `get()` if available, and apply `at` on the underlying data.
+        return at(*ums::data(arr), index);
     } else {
         static_assert(always_false<ARRAY>, "Type does not support valid indexing.");
     }
@@ -60,7 +79,10 @@ auto len(const ARRAY& arr) {
     } else if constexpr (requires { arr.rows(); }) {
         return arr.rows();  // Use `rows()` if available.
     } else if constexpr (std::is_array_v<ARRAY>) {
-        return sizeof(arr) / sizeof(arr[0]);  // Use `sizeof` for arrays.
+        return sizeof(arr) / sizeof(arr[0]);  // Use `sizeof` for fixed-size arrays.
+    } else if constexpr (requires { arr.get(); }) {
+        // If `arr` has a `get()` method, assume it is a smart pointer and apply `len` to the underlying object.
+        return len(*arr.get());
     } else {
         static_assert(always_false<ARRAY>, "Type does not support length retrieval.");
     }
