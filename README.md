@@ -1,10 +1,10 @@
-## UMS
+# UMS
 
 An acronym for Unified Math Stats. An experimental library to see if some C++20 features can be used to unite the many libraries and containers under one "it just works (though maybe not optimally)" kind of framework.
 
 The goal is to make C++ data analysis a little bit more "like Python" in the sense that Python just works. The type restrictions in C++, while wonderful for performance, make compatibility between differing types difficult to navigate, and push people who are stronger in data analysis and weaker in programming towards Python, where things "just work."
 
-## Quick Guide
+# Quick Guide
 
 Add this to your CMake file:
 
@@ -32,7 +32,7 @@ target_include_directories([YOUR_PROJECT] PRIVATE ${UMS_SOURCE_DIR}/include)
 
 Replace [YOUR_PROJECT] with the name of your project.
 
-# Using UMS
+### Using UMS
 
 To use UMS, simply add the following include:
 
@@ -61,7 +61,7 @@ int main() {
 
 This example computes the dot product of an std::array and an std::vector using UMS, showcasing the library's ability to work with different container types.
 
-# Building Your Project with UMS
+### Building Your Project with UMS
 
 After adding the UMS dependency to your CMakeLists.txt, build your project with:
 
