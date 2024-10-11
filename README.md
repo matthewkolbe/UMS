@@ -60,5 +60,3 @@ int main() {
 
 }
 ```
-
-This example computes the dot product of an std::array and an std::vector using UMS, showcasing the library's ability to work with different container types.
