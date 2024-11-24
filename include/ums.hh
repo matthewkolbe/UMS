@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include <sstream>
 #include <iomanip>
 
